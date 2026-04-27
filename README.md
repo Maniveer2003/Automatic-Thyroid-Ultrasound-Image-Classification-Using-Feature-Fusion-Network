@@ -1,45 +1,67 @@
 # Automatic-Thyroid-Ultrasound-Image-Classification-Using-Feature-Fusion-Network
 
-ABSTRACT
+## OUR PROPOSED SYSTEM
 
+An automated thyroid monitoring system for analyzing and classifying thyroid nodules in ultrasound images.
 
+### Methodology
 
-Thyroid nodules are abnormal growth which can be solid or cystic lumps within the thyroid glands. 
-Differentiating between benign and malignant thyroid nodules is important for providing appropriate treatment where ultrasound imaging plays an important role.
-In digital image processing techniques, the characterization of the thyroid tissue offers the texture description using the ultrasound images. 
-This project presents the characterization and classification of thyroid nodules in ultrasound images. It includes extraction of two sets of features based on GLCM and Gabor filters. 
-The performance of the classifiers was evaluated with the accuracy, sensitivity and specificity.
+This project implements a hybrid feature fusion approach:
 
-EXISTING SYSTEM
+Step 1: Image Preprocessing**
+- Align nodule center in each image
+- Normalize image sizes to 224×224 pixels
+- Rescale pixel values between 0 and 1
 
+Step 2: Feature Extraction (3 Methods)**
 
+1. Local Binary Patterns (LBP)**
+   - Extracts texture descriptors
+   - Captures local texture information around each pixel
+   - Average pooling reduces dimensionality
 
-The present case study reports a case of chronic thyroid and thyroid syncope associated with frequent premature ventricular complexes (PVCs). 
-Careful analysis of cough-related symptoms and ECG monitoring led to the suspicion of PVC induced cough. 
-A coincidence between PVCs and episodes of thyroid was also documented by a portable multichannel recorder. 
-Moreover, Doppler echocardiography revealed a PVC-induced transient increase in the pulmonary artery blood flow. 
-After exclusion of other possible aetiologies, complete relief of chronic thyroid and thyroid syncope was achieved by radiofrequency ablation of the arrhythmogenic focus located in the right ventricular outflow tract. 
+2. Histogram of Oriented Gradients (HOG)**
+   - Captures shape and directional patterns
+   - Represents form and appearance of nodule
+   - Quantized into local 1-D histograms
 
+3. Convolutional Auto-Encoder (CAE)**
+   - Deep learning-based unsupervised feature extraction
+   - Encodes 2D images into compact representations
+   - Removes high-frequency noise while preserving meaningful patterns
+   - Architecture: Encoder (compress) → Bottleneck → Decoder (reconstruct)
 
-OUR PROPOSED SYSTEM
+Step 3: Feature Fusion**
+- Combine LBP + HOG + CAE features
+- Integrate TIRADS radiologist scores
+- Include patient demographic information
+- Create comprehensive nodule profile
 
+Step 4: Classification**
+Multiple classifiers tested:
+- Random Forest
+- Logistic Regression
+- Linear SVM
+- **RBF SVM** ← Best performing model
 
+### Results
 
-An affordable thyroid monitoring system is developed for analysis the thyroid level and Nervous activities produced, by using image processing.
-This method is efficient in detecting and classifying the thyroid nodules in ultrasound images for the above said dataset. 
-GLCM and Gabor filter based features are used for texture characterization. 
-The obtained features are applied directly to the VGG16 and RESNET 50 classifier whose quantitative analysis is done by calculating the accuracy, sensitivity and specificity. 
-This method can be considered as the second opinion in improving the diagnostic accuracy
+Best Model: RBF SVM (Radial Basis Function)**
+- Accuracy: 92.52%
+- Sensitivity: 88.8% (correctly identifies malignant nodules)
+- Specificity: 91.1% (correctly identifies benign nodules)
+- F1-Score: 50.89
 
-SOFTWARE REQUIREMENTS 
+Key Findings : RBF SVM outperformed even human radiologist accuracy by reducing false negatives (missed malignancies) while minimizing unnecessary biopsies.
 
-Python
-MATLAB
+### Dataset
 
-
-
-HARDWARE REQUIREMENTS
-
-A high-performance GPU and large-capacity hard disk are required to accommodate the large datasets needed for training the model.
+- Total Images: 3,183 ultrasound images of thyroid nodules
+- Bethesda Grades: 1-6 (malignancy risk assessment)
+- Class Distribution 
+  - Benign (Grades 2): 77%
+  - Suspicious (Grades 3-6): 23%
+- Radiologist Characterization: 1,434 images with TIRADS features
+- Demographics: Predominantly middle-aged to elderly females (77.6%)
 
 
